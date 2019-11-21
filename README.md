@@ -10,8 +10,8 @@ class extensions.
 allprojects {
     repositories {
         ...
-		maven { url 'https://www.jitpack.io' }
-	}
+        maven { url 'https://www.jitpack.io' }
+    }
 }
 ```
 
