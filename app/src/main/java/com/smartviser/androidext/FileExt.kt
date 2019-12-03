@@ -4,12 +4,12 @@ package com.smartviser.androidext
 
 import android.content.Context
 import android.os.Environment
-import android.util.Log
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.util.zip.ZipFile
 
+// TODO: to remove
 const val MEDIA_FOLDER = "/ViserAux"
 
 fun mediaDirectory() = File(Environment.getExternalStorageDirectory(), MEDIA_FOLDER)
@@ -46,7 +46,6 @@ fun inputStreamFromAsset(context: Context, name: String): InputStream = context.
 
 @Throws(IOException::class)
 fun File.unzip() {
-    Log.d("TOTO", "parent ${this.parentFile}")
     ZipFile(this).use { zip ->
         zip.entries().asSequence().forEach { entry ->
             zip.getInputStream(entry).use { input ->

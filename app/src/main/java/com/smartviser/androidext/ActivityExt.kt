@@ -5,6 +5,9 @@ package com.smartviser.androidext
 import android.annotation.TargetApi
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.app.ProgressDialog
+import android.content.Intent
+import android.provider.Telephony
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -71,6 +74,21 @@ fun AppCompatActivity.popup(
     builder.setMessage(messageId)
     builder.setPositiveButton("OK", listener)
     builder.create().show()
+}
+
+fun AppCompatActivity.waitPopup(): ProgressDialog =
+    ProgressDialog.show(this, "Loading", "Please wait...", true)
+
+// SMS application
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+fun AppCompatActivity.isDefaultSmsApp() =
+    packageName == Telephony.Sms.getDefaultSmsPackage(this)
+
+fun AppCompatActivity.setDefaultSmsApp() {
+    val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+    startActivity(intent)
 }
 
 // Navigation
