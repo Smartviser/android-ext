@@ -9,13 +9,12 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.zip.ZipFile
 
-// TODO: to remove
-const val MEDIA_FOLDER = "/ViserAux"
+lateinit var MEDIA_FOLDER: String
 
 fun mediaDirectory() = File(Environment.getExternalStorageDirectory(), MEDIA_FOLDER)
 fun mediaFile(name: String) = File(mediaDirectory(), name)
 fun mediaFile(directoryName: String, name: String) = File(mediaFile(directoryName), name)
-fun mediaFilePath(fileName: String) = mediaFile(fileName).absolutePath
+fun mediaFilePath(fileName: String): String = mediaFile(fileName).absolutePath
 
 fun makeMediaSubDirectory(name: String): Boolean {
     val directory = mediaFile(name)
