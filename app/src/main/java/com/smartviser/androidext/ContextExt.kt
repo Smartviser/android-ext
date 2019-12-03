@@ -5,15 +5,16 @@ package com.smartviser.androidext
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Build
+import android.provider.Telephony
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
-import androidx.annotation.RequiresApi
-import android.content.res.Resources
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 
 val Context.telephonyManager: TelephonyManager
     get() = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -21,11 +22,6 @@ val Context.telephonyManager: TelephonyManager
 val Context.subscriptionManager: SubscriptionManager
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     get() = getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
-
-fun Context.checkPermission(vararg permissions: String): Boolean =
-    Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissions.fold(true) { accumulator, permission ->
-        accumulator && checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-    }
 
 // Resources
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +32,23 @@ fun Context.getResourcesArrayValue(arrayId: Int, position: Int): String? =
     } catch (e: Resources.NotFoundException) {
         null
     }
+
+// Permissions
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+fun Context.checkPermission(vararg permissions: String): Boolean =
+    Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissions.fold(true) { accumulator, permission ->
+        accumulator && checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+fun Context.isDefaultSmsApp() =
+    packageName == Telephony.Sms.getDefaultSmsPackage(this)
+
+fun Context.setDefaultSmsApp() {
+    val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+    startActivity(intent)
+}
 
 // Popups
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,13 +62,21 @@ fun Context.popup(
     messageId: Int,
     listener: DialogInterface.OnClickListener?
 ) {
+    popup(titleId, getString(messageId), listener)
+}
+
+fun Context.popup(
+    titleId: Int?,
+    message: String,
+    listener: DialogInterface.OnClickListener?
+) {
     val builder = AlertDialog.Builder(this)
     if (titleId != null) {
         builder.setTitle(titleId)
     }
     builder.setCancelable(false)
-    builder.setMessage(messageId)
-    builder.setPositiveButton("OK", listener)
+    builder.setMessage(message)
+    builder.setPositiveButton(getString(android.R.string.ok), listener)
     builder.create().show()
 }
 

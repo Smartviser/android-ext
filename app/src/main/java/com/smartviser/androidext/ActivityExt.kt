@@ -2,10 +2,8 @@
 
 package com.smartviser.androidext
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.provider.Telephony
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -153,18 +151,6 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
 
 fun allGranted(grantResults: IntArray) =
     grantResults.fold(true) { acc, result -> acc && (result == PackageManager.PERMISSION_GRANTED) }
-
-// SMS application
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-fun AppCompatActivity.isDefaultSmsApp() =
-    packageName == Telephony.Sms.getDefaultSmsPackage(this)
-
-fun AppCompatActivity.setDefaultSmsApp() {
-    val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
-    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
-    startActivity(intent)
-}
 
 // Navigation
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
