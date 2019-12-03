@@ -4,7 +4,10 @@ package com.smartviser.androidext
 
 import java.nio.ByteBuffer
 
-fun Any.tag(): String = javaClass.name
+fun Any.tag(): String = javaClass.simpleName
+
+fun Int.nullIfMax(): Int? = if (this == Int.MAX_VALUE) null else this
+fun Long.nullIfMax(): Long? = if (this == Long.MAX_VALUE) null else this
 
 fun ByteArray.hexString(separator: String = ":"): String {
     val buf = StringBuilder()
