@@ -2,6 +2,8 @@
 
 package com.smartviser.androidext
 
+import android.text.Editable
+
 @Throws(ClassNotFoundException::class)
 fun String.toClass(): Class<*> = Class.forName(this)
 
@@ -15,3 +17,5 @@ fun String.getPath(): String {
     }
     return directory
 }
+
+fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

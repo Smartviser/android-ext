@@ -57,3 +57,21 @@ fun File.unzip() {
         }
     }
 }
+
+fun fileExist(name: String): Boolean = mediaFile(name).exists()
+
+fun createFile(name: String): File {
+    val file = mediaFile(name)
+    if (!file.exists()) {
+        file.createNewFile()
+    }
+    return file
+}
+
+fun deleteFile(name: String): Boolean {
+    val file = mediaFile(name)
+    if (file.exists()) {
+        return file.delete()
+    }
+    return false
+}
