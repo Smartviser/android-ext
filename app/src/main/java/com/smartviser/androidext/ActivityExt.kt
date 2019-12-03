@@ -2,13 +2,10 @@
 
 package com.smartviser.androidext
 
-import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Telephony
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -156,31 +153,6 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
 
 fun allGranted(grantResults: IntArray) =
     grantResults.fold(true) { acc, result -> acc && (result == PackageManager.PERMISSION_GRANTED) }
-
-// Popups
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-fun AppCompatActivity.popup(titleId: Int?, messageId: Int) {
-    popup(titleId, messageId, null)
-}
-
-fun AppCompatActivity.popup(
-    titleId: Int?,
-    messageId: Int,
-    listener: DialogInterface.OnClickListener?
-) {
-    val builder = AlertDialog.Builder(this)
-    if (titleId != null) {
-        builder.setTitle(titleId)
-    }
-    builder.setCancelable(false)
-    builder.setMessage(messageId)
-    builder.setPositiveButton("OK", listener)
-    builder.create().show()
-}
-
-fun AppCompatActivity.waitPopup(): ProgressDialog =
-    ProgressDialog.show(this, "Loading", "Please wait...", true)
 
 // SMS application
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
