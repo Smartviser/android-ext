@@ -40,11 +40,11 @@ fun Context.getResourcesArrayValue(arrayId: Int, position: Int): String? =
 // Popups
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-fun AppCompatActivity.popup(titleId: Int?, messageId: Int) {
+fun Context.popup(titleId: Int?, messageId: Int) {
     popup(titleId, messageId, null)
 }
 
-fun AppCompatActivity.popup(
+fun Context.popup(
     titleId: Int?,
     messageId: Int,
     listener: DialogInterface.OnClickListener?
@@ -59,7 +59,7 @@ fun AppCompatActivity.popup(
     builder.create().show()
 }
 
-fun AppCompatActivity.waitPopup(): ProgressDialog =
+fun Context.waitPopup(): ProgressDialog =
     ProgressDialog.show(this, "Loading", "Please wait...", true)
 
 fun Context.toast(message: String, isShort: Boolean) =
