@@ -19,3 +19,10 @@ fun String.getPath(): String {
 }
 
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+
+fun String.appendListItem(separator: String, item: String): String {
+    var result = this
+    if (isNotEmpty()) result += separator
+    result += item
+    return result
+}
