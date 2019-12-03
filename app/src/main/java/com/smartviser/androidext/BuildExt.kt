@@ -5,7 +5,6 @@ package com.smartviser.androidext
 import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresPermission
-import com.smartviser.androidext.BuildConfig
 
 fun deviceFullName() =
     if (Build.MODEL.startsWith(Build.MANUFACTURER)) {

@@ -97,4 +97,3 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, titleId: Int) {
 }
 
 fun AppCompatActivity.currentFragment() = supportFragmentManager.findFragmentByTag(FRAGMENT_TAG)
-
