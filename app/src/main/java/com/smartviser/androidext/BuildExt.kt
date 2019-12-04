@@ -20,6 +20,3 @@ fun deviceSerial(): String =
     } else {
         Build.SERIAL
     }
-
-val applicationVersion
-    get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
