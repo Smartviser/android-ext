@@ -21,4 +21,5 @@ fun deviceSerial(): String =
         Build.SERIAL
     }
 
-const val applicationVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+val applicationVersion
+    get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
