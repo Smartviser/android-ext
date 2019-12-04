@@ -2,7 +2,6 @@
 
 package com.smartviser.androidext
 
-import android.app.Activity
 import android.app.ActivityManager
 import android.app.ProgressDialog
 import android.content.Context
@@ -21,25 +20,6 @@ import android.telephony.TelephonyManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-
-fun Context.getBuildConfigValue(fieldName: String): Any? {
-    try {
-        val clazz = Class.forName("$packageName.BuildConfig")
-        val field = clazz.getField(fieldName)
-        return field.get(null)
-    } catch (e: ClassNotFoundException) {
-        e.printStackTrace()
-    } catch (e: NoSuchFieldException) {
-        e.printStackTrace()
-    } catch (e: IllegalAccessException) {
-        e.printStackTrace()
-    }
-
-    return null
-}
-
-val Context.applicationVersion
-    get() = "${getBuildConfigValue("VERSION_NAME")} (${getBuildConfigValue("VERSION_CODE")})"
 
 val Context.telephonyManager: TelephonyManager
     get() = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -62,6 +42,28 @@ val Context.audioManager: AudioManager
 
 val Context.powerManager: PowerManager
     get() = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+// Application BuildConfig
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+fun Context.getBuildConfigValue(fieldName: String): Any? {
+    try {
+        val clazz = Class.forName("$packageName.BuildConfig")
+        val field = clazz.getField(fieldName)
+        return field.get(null)
+    } catch (e: ClassNotFoundException) {
+        e.printStackTrace()
+    } catch (e: NoSuchFieldException) {
+        e.printStackTrace()
+    } catch (e: IllegalAccessException) {
+        e.printStackTrace()
+    }
+
+    return null
+}
+
+val Context.applicationVersion
+    get() = "${getBuildConfigValue("VERSION_NAME")} (${getBuildConfigValue("VERSION_CODE")})"
 
 // Resources
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
