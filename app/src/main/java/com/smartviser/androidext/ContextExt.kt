@@ -2,6 +2,7 @@
 
 package com.smartviser.androidext
 
+import android.app.ActivityManager
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -9,7 +10,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.LocationManager
+import android.media.AudioManager
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Telephony
 import android.telecom.TelecomManager
 import android.telephony.SubscriptionManager
@@ -17,7 +20,6 @@ import android.telephony.TelephonyManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 
 val Context.telephonyManager: TelephonyManager
     get() = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -31,6 +33,15 @@ val Context.locationManager: LocationManager
 
 val Context.telecomManager: TelecomManager
     get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+
+val Context.activityManager: ActivityManager
+    get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+val Context.audioManager: AudioManager
+    get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+val Context.powerManager: PowerManager
+    get() = getSystemService(Context.POWER_SERVICE) as PowerManager
 
 // Resources
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

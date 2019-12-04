@@ -49,3 +49,6 @@ fun Char.bytes(): ByteArray =
     ByteBuffer.allocate(2)
         .putChar(this)
         .array()
+
+fun Long.bytesToMegabytes(): Double =
+    this / 1048576.0
