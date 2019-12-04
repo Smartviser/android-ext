@@ -21,8 +21,8 @@ fun createNotificationChannel(context: Context, name: String, description: Strin
 
 fun notificationChannelId(context: Context) = "${context.getBuildConfigValue("APPLICATION_ID")}.CHANNEL_ID"
 
-fun Notification.Builder.setDefaultChannelId() {
+fun Notification.Builder.setDefaultChannelId(context: Context) {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-        setChannelId(notificationChannelId())
+        setChannelId(notificationChannelId(context))
     }
 }
