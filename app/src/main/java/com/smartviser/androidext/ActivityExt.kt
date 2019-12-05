@@ -155,7 +155,7 @@ fun allGranted(grantResults: IntArray) =
 // Navigation
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const val FRAGMENT_TAG = BuildConfig.APPLICATION_ID + ".FRAGMENT_TAG"
+const val FRAGMENT_TAG = "com.smartviser.android.FRAGMENT_TAG"
 
 fun AppCompatActivity.replaceFragment(containerViewId: Int, fragment: Fragment, titleId: Int) {
     val fragmentManager = supportFragmentManager

@@ -43,6 +43,28 @@ val Context.audioManager: AudioManager
 val Context.powerManager: PowerManager
     get() = getSystemService(Context.POWER_SERVICE) as PowerManager
 
+// Application BuildConfig
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+fun Context.getBuildConfigValue(fieldName: String): Any? {
+    try {
+        val clazz = Class.forName("$packageName.BuildConfig")
+        val field = clazz.getField(fieldName)
+        return field.get(null)
+    } catch (e: ClassNotFoundException) {
+        e.printStackTrace()
+    } catch (e: NoSuchFieldException) {
+        e.printStackTrace()
+    } catch (e: IllegalAccessException) {
+        e.printStackTrace()
+    }
+
+    return null
+}
+
+val Context.applicationVersion
+    get() = "${getBuildConfigValue("VERSION_NAME")} (${getBuildConfigValue("VERSION_CODE")})"
+
 // Resources
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

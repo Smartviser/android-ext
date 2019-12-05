@@ -10,7 +10,7 @@ import android.content.Context
 fun createNotificationChannel(context: Context, name: String, description: String? = null) {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(notificationChannelId(), name, importance)
+        val channel = NotificationChannel(notificationChannelId(context), name, importance)
         channel.description = description ?: name
         // Register the channel with the system; you can't change the importance
         // or other notification behaviours after this
@@ -19,10 +19,10 @@ fun createNotificationChannel(context: Context, name: String, description: Strin
     }
 }
 
-fun notificationChannelId() = "${BuildConfig.APPLICATION_ID}.CHANNEL_ID"
+fun notificationChannelId(context: Context) = "${context.getBuildConfigValue("APPLICATION_ID")}.CHANNEL_ID"
 
-fun Notification.Builder.setDefaultChannelId() {
+fun Notification.Builder.setDefaultChannelId(context: Context) {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-        setChannelId(notificationChannelId())
+        setChannelId(notificationChannelId(context))
     }
 }

@@ -6,6 +6,8 @@ import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresPermission
 
+const val ANDROID_EXT_LIB_VERSION = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+
 fun deviceFullName() =
     if (Build.MODEL.startsWith(Build.MANUFACTURER)) {
         Build.MODEL.capitalize()
@@ -20,5 +22,3 @@ fun deviceSerial(): String =
     } else {
         Build.SERIAL
     }
-
-const val applicationVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
