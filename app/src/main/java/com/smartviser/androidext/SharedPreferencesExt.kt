@@ -12,7 +12,7 @@ operator fun SharedPreferences.get(key: String, default: Int) = getInt(key, defa
 operator fun SharedPreferences.get(key: String, default: Long) = getLong(key, default)
 operator fun SharedPreferences.get(key: String, default: Float) = getFloat(key, default)
 operator fun SharedPreferences.get(key: String, default: Boolean) = getBoolean(key, default)
-operator fun SharedPreferences.get(key: String, default: String) : String? = getString(key, default)
+operator fun SharedPreferences.get(key: String, default: String?) : String? = getString(key, default)
 operator fun SharedPreferences.get(key: String, default: Set<String>) : Set<String>? = getStringSet(key, default)
 
 operator fun SharedPreferences.set(key: String, value: Int?) =
