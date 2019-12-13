@@ -17,9 +17,12 @@ import android.provider.Telephony
 import android.telecom.TelecomManager
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 
 val Context.telephonyManager: TelephonyManager
     get() = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -138,3 +141,10 @@ fun Context.waitPopup(): ProgressDialog =
 
 fun Context.toast(message: String, isShort: Boolean) =
     Toast.makeText(this, message, if (isShort) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+
+fun Context.hideKeyboard(view: View?) {
+    if (view != null) {
+        ContextCompat.getSystemService(this, InputMethodManager::class.java)?.
+            hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+}
