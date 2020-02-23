@@ -17,8 +17,10 @@ import android.provider.Telephony
 import android.telecom.TelecomManager
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -136,11 +138,33 @@ fun Context.popup(
     builder.create().show()
 }
 
+fun Context.promptDialog(title: String, message: String, defaultValue: String?,
+                 callback: (validated: Boolean, value: String) -> Unit) {
+    val alert = AlertDialog.Builder(this).setTitle(title).setMessage(message)
+
+    val view = LayoutInflater.from(this).inflate(R.layout.text_prompt_dialog, null)
+    view.findViewById<EditText>(R.id.editText).setText(defaultValue)
+    alert.setView(view)
+
+    alert.setPositiveButton(android.R.string.ok) { _, _ ->
+        callback(true, view.findViewById<EditText>(R.id.editText).text.toString())
+    }
+
+    alert.setNegativeButton(android.R.string.cancel) { _, _ ->
+        callback(false, view.findViewById<EditText>(R.id.editText).text.toString())
+    }
+
+    alert.show()
+}
+
 fun Context.waitPopup(): ProgressDialog =
     ProgressDialog.show(this, "Loading", "Please wait...", true)
 
 fun Context.toast(message: String, isShort: Boolean) =
     Toast.makeText(this, message, if (isShort) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+
+// Miscellaneous
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 fun Context.hideKeyboard(view: View?) {
     if (view != null) {
