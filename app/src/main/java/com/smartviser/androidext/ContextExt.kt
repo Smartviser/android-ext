@@ -3,6 +3,7 @@
 package com.smartviser.androidext
 
 import android.app.ActivityManager
+import android.app.AlarmManager
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -47,6 +48,9 @@ val Context.audioManager: AudioManager
 
 val Context.powerManager: PowerManager
     get() = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+val Context.alarmManager: AlarmManager
+    get() = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
 // Application BuildConfig
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
