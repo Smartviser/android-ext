@@ -5,6 +5,7 @@ package com.smartviser.androidext
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
@@ -153,7 +154,7 @@ fun allGranted(permissions: Array<String>, grantResults: IntArray, activity: App
     grantResults.foldIndexed(true) { index, acc, result ->
         acc && (result == PackageManager.PERMISSION_GRANTED ||
                 (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                        && !activity.shouldShowRequestPermissionRationale(permissions[index])))
+                        && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[index])))
     }
 
 // Navigation
