@@ -149,8 +149,12 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
     return permissions
 }
 
-fun allGranted(grantResults: IntArray) =
-    grantResults.fold(true) { acc, result -> acc && (result == PackageManager.PERMISSION_GRANTED) }
+fun allGranted(permissions: Array<String>, grantResults: IntArray, activity: AppCompatActivity) =
+    grantResults.foldIndexed(true) { index, acc, result ->
+        acc && (result == PackageManager.PERMISSION_GRANTED ||
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && !activity.shouldShowRequestPermissionRationale(permissions[index])))
+    }
 
 // Navigation
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
