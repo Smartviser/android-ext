@@ -113,7 +113,7 @@ fun AppCompatActivity.requestAllPermissions(): Boolean {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val permissions = neededPermissions()
         if (permissions.isNotEmpty()) {
-            requestPermissions(neededPermissions().toTypedArray(), GLOBAL_PERMISSION_REQUEST_CODE)
+            requestPermissions(permissions.toTypedArray(), GLOBAL_PERMISSION_REQUEST_CODE)
         }
         return permissions.isEmpty()
     }
