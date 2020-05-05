@@ -93,8 +93,8 @@ fun Context.getResourcesArrayValue(arrayId: Int, position: Int): String? =
 // Permissions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const val DIALER_ROLE_REQUEST_CODE = 203984
-const val SMS_ROLE_REQUEST_CODE = 594832
+const val DIALER_ROLE_REQUEST_CODE = 63984
+const val SMS_ROLE_REQUEST_CODE = 64832
 
 fun Context.checkPermission(vararg permissions: String): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissions.fold(true) { accumulator, permission ->
