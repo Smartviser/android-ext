@@ -2,9 +2,11 @@
 
 package com.smartviser.androidext
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.ProgressDialog
+import android.app.role.RoleManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -52,6 +54,10 @@ val Context.powerManager: PowerManager
 val Context.alarmManager: AlarmManager
     get() = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+val Context.roleManager: RoleManager
+    @RequiresApi(Build.VERSION_CODES.Q)
+    get() = getSystemService(RoleManager::class.java) as RoleManager
+
 // Application BuildConfig
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,29 +93,50 @@ fun Context.getResourcesArrayValue(arrayId: Int, position: Int): String? =
 // Permissions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const val DIALER_ROLE_REQUEST_CODE = 203984
+const val SMS_ROLE_REQUEST_CODE = 594832
+
 fun Context.checkPermission(vararg permissions: String): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissions.fold(true) { accumulator, permission ->
         accumulator && checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
     }
 
 fun Context.isDefaultSmsApp() =
-    packageName == Telephony.Sms.getDefaultSmsPackage(this)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        !roleManager.isRoleAvailable(RoleManager.ROLE_SMS) || roleManager.isRoleHeld(RoleManager.ROLE_SMS)
+    } else {
+        packageName == Telephony.Sms.getDefaultSmsPackage(this)
+    }
 
-fun Context.setDefaultSmsApp() {
-    val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
-    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
-    startActivity(intent)
+fun Activity.setDefaultSmsApp() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        startActivityForResult(roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS),
+            SMS_ROLE_REQUEST_CODE)
+    } else {
+        val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+        startActivity(intent)
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
 fun Context.isDefaultDialerApp() =
-    packageName == telecomManager.defaultDialerPackage
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        !roleManager.isRoleAvailable(RoleManager.ROLE_DIALER) || roleManager.isRoleHeld(RoleManager.ROLE_DIALER)
+    } else {
+        packageName == telecomManager.defaultDialerPackage
+    }
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun Context.setDefaultDialerApp() {
-    val intent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
-    intent.putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
-    startActivity(intent)
+fun Activity.setDefaultDialerApp() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        startActivityForResult(roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER),
+            DIALER_ROLE_REQUEST_CODE)
+    } else {
+        val intent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
+        intent.putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
+        startActivity(intent)
+    }
 }
 
 // Popups
