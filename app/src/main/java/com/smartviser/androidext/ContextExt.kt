@@ -2,11 +2,9 @@
 
 package com.smartviser.androidext
 
-import android.app.Activity
-import android.app.ActivityManager
-import android.app.AlarmManager
-import android.app.ProgressDialog
+import android.app.*
 import android.app.role.RoleManager
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -57,6 +55,13 @@ val Context.alarmManager: AlarmManager
 val Context.roleManager: RoleManager
     @RequiresApi(Build.VERSION_CODES.Q)
     get() = getSystemService(RoleManager::class.java) as RoleManager
+
+val Context.usageStatsManager: UsageStatsManager
+    @RequiresApi(Build.VERSION_CODES.M)
+    get() = getSystemService(UsageStatsManager::class.java) as UsageStatsManager
+
+val Context.appOpsManager: AppOpsManager
+    get() = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
 // Application BuildConfig
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
