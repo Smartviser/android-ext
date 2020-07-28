@@ -5,8 +5,13 @@ package com.smartviser.androidext
 import android.content.Context
 import android.os.Environment
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
+import java.math.BigInteger
+import java.security.DigestInputStream
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.zip.ZipFile
 
 lateinit var MEDIA_FOLDER: String
@@ -74,3 +79,22 @@ fun deleteFile(name: String): Boolean {
     }
     return false
 }
+
+val File.md5: String?
+    get() = try {
+        val messageDigest = MessageDigest.getInstance("MD5")
+        val inputStream = FileInputStream(this)
+        val digestStream = DigestInputStream(inputStream, messageDigest)
+        val buffer = ByteArray(8192)
+        while (digestStream.read(buffer) > 0);
+        val bigInt = BigInteger(1, messageDigest.digest())
+        var output = bigInt.toString(16)
+        output = String.format("%32s", output).replace(' ', '0')
+        digestStream.close()
+        inputStream.close()
+        output
+    } catch (e: NoSuchAlgorithmException) {
+        null
+    } catch (e: IOException) {
+        null
+    }
