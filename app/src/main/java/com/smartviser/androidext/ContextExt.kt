@@ -2,9 +2,11 @@
 
 package com.smartviser.androidext
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.ProgressDialog
+import android.app.role.RoleManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -87,6 +89,8 @@ fun Context.getResourcesArrayValue(arrayId: Int, position: Int): String? =
 // Permissions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const val SMS_ROLE_REQUEST_CODE = 1000
+
 fun Context.checkPermission(vararg permissions: String): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissions.fold(true) { accumulator, permission ->
         accumulator && checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
@@ -96,9 +100,17 @@ fun Context.isDefaultSmsApp() =
     packageName == Telephony.Sms.getDefaultSmsPackage(this)
 
 fun Context.setDefaultSmsApp() {
-    val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
-    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
-    startActivity(intent)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val roleManager: RoleManager? = getSystemService(RoleManager::class.java)
+        if (roleManager?.isRoleAvailable(RoleManager.ROLE_SMS) == true) {
+            val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS)
+            (this as? Activity)?.startActivityForResult(intent, SMS_ROLE_REQUEST_CODE)
+        }
+    } else {
+        val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+        startActivity(intent)
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -142,8 +154,10 @@ fun Context.popup(
     builder.create().show()
 }
 
-fun Context.promptDialog(title: String, message: String, defaultValue: String?,
-                 callback: (validated: Boolean, value: String) -> Unit) {
+fun Context.promptDialog(
+    title: String, message: String, defaultValue: String?,
+    callback: (validated: Boolean, value: String) -> Unit
+) {
     val alert = AlertDialog.Builder(this).setTitle(title).setMessage(message)
 
     val view = LayoutInflater.from(this).inflate(R.layout.text_prompt_dialog, null)
@@ -172,7 +186,7 @@ fun Context.toast(message: String, isShort: Boolean) =
 
 fun Context.hideKeyboard(view: View?) {
     if (view != null) {
-        ContextCompat.getSystemService(this, InputMethodManager::class.java)?.
-            hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        ContextCompat.getSystemService(this, InputMethodManager::class.java)
+            ?.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }
