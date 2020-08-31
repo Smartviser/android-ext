@@ -5,6 +5,7 @@ package com.smartviser.androidext
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
@@ -112,7 +113,7 @@ fun AppCompatActivity.requestAllPermissions(): Boolean {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val permissions = neededPermissions()
         if (permissions.isNotEmpty()) {
-            requestPermissions(neededPermissions().toTypedArray(), GLOBAL_PERMISSION_REQUEST_CODE)
+            requestPermissions(permissions.toTypedArray(), GLOBAL_PERMISSION_REQUEST_CODE)
         }
         return permissions.isEmpty()
     }
@@ -149,8 +150,12 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
     return permissions
 }
 
-fun allGranted(grantResults: IntArray) =
-    grantResults.fold(true) { acc, result -> acc && (result == PackageManager.PERMISSION_GRANTED) }
+fun allGranted(permissions: Array<String>, grantResults: IntArray, activity: AppCompatActivity) =
+    grantResults.foldIndexed(true) { index, acc, result ->
+        acc && (result == PackageManager.PERMISSION_GRANTED ||
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[index])))
+    }
 
 // Navigation
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

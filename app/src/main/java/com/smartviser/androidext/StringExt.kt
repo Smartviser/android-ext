@@ -26,3 +26,12 @@ fun String.appendListItem(separator: String, item: String): String {
     result += item
     return result
 }
+
+val String.isNumeric: Boolean
+    get() = matches("-?\\d+(\\.\\d+)?".toRegex())
+
+val String.isInteger: Boolean
+    get() = matches("-?\\d+".toRegex())
+
+val String.isNatural: Boolean
+    get() = matches("\\d+".toRegex())

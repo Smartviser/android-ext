@@ -10,7 +10,8 @@ fun AlarmManager.wakeupIn(duration: Long, wakeupIntent: PendingIntent?) {
 }
 
 fun AlarmManager.wakeupAt(time: Long, wakeupIntent: PendingIntent?) {
-    if ("OPPO" == Build.MANUFACTURER) { // This method is sharper for OPPO phones...
+    if ("OPPO" == Build.MANUFACTURER || "realme" == Build.MANUFACTURER) {
+        // This method is sharper for OPPO and realme phones...
         val info = AlarmClockInfo(time, null)
         setAlarmClock(info, wakeupIntent)
     } else {
