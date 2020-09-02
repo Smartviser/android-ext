@@ -4,6 +4,7 @@ package com.smartviser.androidext
 
 import android.app.*
 import android.app.role.RoleManager
+import android.app.usage.StorageStatsManager
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.DialogInterface
@@ -14,6 +15,7 @@ import android.location.LocationManager
 import android.media.AudioManager
 import android.os.Build
 import android.os.PowerManager
+import android.os.storage.StorageManager
 import android.provider.Telephony
 import android.telecom.TelecomManager
 import android.telephony.SubscriptionManager
@@ -62,6 +64,14 @@ val Context.usageStatsManager: UsageStatsManager
 
 val Context.appOpsManager: AppOpsManager
     get() = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+
+val Context.storageManager: StorageManager
+    get() = getSystemService(Context.STORAGE_SERVICE) as StorageManager
+
+val Context.storageStatsManager: StorageStatsManager
+    @RequiresApi(Build.VERSION_CODES.O)
+    get() = getSystemService(Context.STORAGE_STATS_SERVICE) as StorageStatsManager
+
 
 // Application BuildConfig
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,8 +125,10 @@ fun Context.isDefaultSmsApp() =
 
 fun Activity.setDefaultSmsApp() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        startActivityForResult(roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS),
-            SMS_ROLE_REQUEST_CODE)
+        startActivityForResult(
+            roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS),
+            SMS_ROLE_REQUEST_CODE
+        )
     } else {
         val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
         intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
@@ -135,8 +147,10 @@ fun Context.isDefaultDialerApp() =
 @RequiresApi(Build.VERSION_CODES.M)
 fun Activity.setDefaultDialerApp() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        startActivityForResult(roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER),
-            DIALER_ROLE_REQUEST_CODE)
+        startActivityForResult(
+            roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER),
+            DIALER_ROLE_REQUEST_CODE
+        )
     } else {
         val intent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
         intent.putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
@@ -174,8 +188,10 @@ fun Context.popup(
     builder.create().show()
 }
 
-fun Context.promptDialog(title: String, message: String, defaultValue: String?,
-                 callback: (validated: Boolean, value: String) -> Unit) {
+fun Context.promptDialog(
+    title: String, message: String, defaultValue: String?,
+    callback: (validated: Boolean, value: String) -> Unit
+) {
     val alert = AlertDialog.Builder(this).setTitle(title).setMessage(message)
 
     val view = LayoutInflater.from(this).inflate(R.layout.text_prompt_dialog, null)
@@ -204,7 +220,7 @@ fun Context.toast(message: String, isShort: Boolean) =
 
 fun Context.hideKeyboard(view: View?) {
     if (view != null) {
-        ContextCompat.getSystemService(this, InputMethodManager::class.java)?.
-            hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        ContextCompat.getSystemService(this, InputMethodManager::class.java)
+            ?.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }
