@@ -3,6 +3,9 @@
 package com.smartviser.androidext
 
 import android.text.Editable
+import org.json.JSONException
+import org.json.JSONObject
+import java.security.MessageDigest
 
 @Throws(ClassNotFoundException::class)
 fun String.toClass(): Class<*> = Class.forName(this)
@@ -35,3 +38,18 @@ val String.isInteger: Boolean
 
 val String.isNatural: Boolean
     get() = matches("\\d+".toRegex())
+
+val String.parsedJsonString: String?
+    get() = try {
+        JSONObject(this).toString()
+    } catch (e: JSONException) {
+        null
+    }
+
+val String.md5: String?
+    get() {
+        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
+        return bytes.joinToString("") {
+            "%02x".format(it)
+        }
+    }
