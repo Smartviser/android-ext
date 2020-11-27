@@ -82,6 +82,7 @@ private val permissionSdkVersions = mapOf(
     Pair(android.Manifest.permission.READ_CALL_LOG, Build.VERSION_CODES.JELLY_BEAN),
     Pair(android.Manifest.permission.READ_EXTERNAL_STORAGE, Build.VERSION_CODES.JELLY_BEAN),
     Pair(android.Manifest.permission.READ_PHONE_NUMBERS, Build.VERSION_CODES.O),
+    Pair(android.Manifest.permission.READ_PHONE_STATE, Build.VERSION_CODES.JELLY_BEAN),
     Pair(android.Manifest.permission.READ_VOICEMAIL, Build.VERSION_CODES.LOLLIPOP),
     Pair(android.Manifest.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND, Build.VERSION_CODES.O),
     Pair(
