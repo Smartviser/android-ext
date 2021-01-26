@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction
 const val GLOBAL_PERMISSION_REQUEST_CODE = 1234
 
 private val permissionSdkVersions = mapOf(
+    Pair(android.Manifest.permission.FOREGROUND_SERVICE, Build.VERSION_CODES.P),
     Pair(android.Manifest.permission.ACCEPT_HANDOVER, Build.VERSION_CODES.P),
     Pair(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION, Build.VERSION_CODES.Q),
     Pair(android.Manifest.permission.ACCESS_MEDIA_LOCATION, Build.VERSION_CODES.Q),
@@ -64,7 +65,6 @@ private val permissionSdkVersions = mapOf(
     Pair(android.Manifest.permission.CALL_COMPANION_APP, Build.VERSION_CODES.Q),
     Pair(android.Manifest.permission.CAPTURE_AUDIO_OUTPUT, Build.VERSION_CODES.KITKAT),
     Pair(android.Manifest.permission.CHANGE_WIFI_MULTICAST_STATE, Build.VERSION_CODES.DONUT),
-    Pair(android.Manifest.permission.FOREGROUND_SERVICE, Build.VERSION_CODES.P),
     Pair(android.Manifest.permission.GET_ACCOUNTS_PRIVILEGED, Build.VERSION_CODES.M),
     Pair(android.Manifest.permission.GLOBAL_SEARCH, Build.VERSION_CODES.DONUT),
     Pair(android.Manifest.permission.INSTALL_LOCATION_PROVIDER, Build.VERSION_CODES.DONUT),
