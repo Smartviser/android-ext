@@ -127,8 +127,13 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         try {
             val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+            Log.d("TOTO","info : $info")
+            Log.d("TOTO","info.requestedPermissions : ${info.requestedPermissions}")
+
             if (info.requestedPermissions != null) {
                 for (permission in info.requestedPermissions) {
+                    Log.d("TOTO","permission : $permission")
+
                     // Needed for WIKO
                     if (!permission.startsWith("android.permission")) {
                         continue
@@ -138,6 +143,17 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
                     ) {
                         continue
                     }
+                    Log.d(
+                        "TOTO",
+                        "checkSelfPermission(permission) : ${checkSelfPermission(permission)}"
+                    )
+
+                    Log.d(
+                        "TOTO",
+                        "PackageManager.PERMISSION_GRANTED : ${PackageManager.PERMISSION_GRANTED}"
+                    )
+
+
                     if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                         permissions.add(permission)
                     }
