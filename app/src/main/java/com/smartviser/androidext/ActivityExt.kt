@@ -2,7 +2,6 @@
 
 package com.smartviser.androidext
 
-import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -138,13 +137,6 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
                     ) {
                         continue
                     }
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        if(permission == Manifest.permission.ACCESS_BACKGROUND_LOCATION) {
-                            continue;
-                        }
-                    }
-                    
                     if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                         permissions.add(permission)
                     }
