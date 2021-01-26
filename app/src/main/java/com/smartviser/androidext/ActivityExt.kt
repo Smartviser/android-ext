@@ -2,6 +2,7 @@
 
 package com.smartviser.androidext
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -133,6 +134,12 @@ private fun AppCompatActivity.neededPermissions(): List<String> {
             if (info.requestedPermissions != null) {
                 for (permission in info.requestedPermissions) {
                     Log.d("TOTO","permission : $permission")
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        if(permission == Manifest.permission.ACCESS_BACKGROUND_LOCATION) {
+                            continue;
+                        }
+                    }
 
                     // Needed for WIKO
                     if (!permission.startsWith("android.permission")) {
