@@ -4,8 +4,9 @@ package com.smartviser.androidext
 
 import android.telephony.TelephonyManager
 
-fun networkTypeToString(networkType: Int) =
-    when (networkType) {
+fun networkTypeToString(networkType: Int) : String {
+    Log.d("TOTO", "networkType : $networkType")
+    return when (networkType) {
         TelephonyManager.NETWORK_TYPE_1xRTT -> "1xRTT"
         TelephonyManager.NETWORK_TYPE_CDMA -> "CDMA"
         TelephonyManager.NETWORK_TYPE_EDGE -> "EDGE"
@@ -27,6 +28,7 @@ fun networkTypeToString(networkType: Int) =
         TelephonyManager.NETWORK_TYPE_UMTS -> "UMTS"
         else -> "UNKNOWN($networkType)"
     }
+}
 
 val TelephonyManager.csRAT: String
     get() = when (networkType) {
